@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black"
+    tools:context=".ui.image.ImageConverterFragment">
+
+    <ImageView
+        android:id="@+id/png_image_load"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="#E4000000"
+        app:layout_constraintBottom_toTopOf="@+id/guideline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="#65FFFFFF"
+        android:paddingHorizontal="@dimen/_15adp"
+        android:orientation="vertical"
+        android:gravity="center_vertical"
+        app:layout_constraintBottom_toTopOf="@+id/guideline"
+        app:layout_constraintTop_toTopOf="@+id/guideline1" >
+        <TextView
+            android:id="@+id/selected_img"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="selected img : null"
+            android:textColor="#000000"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_1adp"
+            android:layout_marginVertical="@dimen/_2adp"
+            android:background="@color/black"/>
+        <TextView
+            android:id="@+id/png_image"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Png image : null"
+            android:textColor="#000000"/>
+
+    </LinearLayout>
+
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/upload_img"
+        android:layout_width="@dimen/_100adp"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="@dimen/_12adp"
+        android:background="#4CAF50"
+        android:text="upload"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent=".90" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.76" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

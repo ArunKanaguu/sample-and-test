@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:paddingHorizontal="@dimen/_12adp"
+    android:gravity="center"
+    android:background="#B1B1B1"
+    android:layout_height="match_parent"
+    tools:context=".ui.NumberToWordsFragment">
+
+    <EditText
+        android:id="@+id/numbers"
+        android:textAlignment="center"
+        android:textSize="@dimen/_14asp"
+        android:layout_width="match_parent"
+        android:inputType="numberDecimal"
+        android:layout_height="@dimen/_40adp"
+        android:background="@color/white"
+        />
+
+    <TextView
+        android:id="@+id/words"
+        android:layout_marginVertical="@dimen/_12adp"
+        android:layout_width="match_parent"
+        android:textSize="@dimen/_14asp"
+        android:textStyle="bold"
+        android:textAlignment="center"
+        android:layout_height="wrap_content"
+        />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/currency"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="cover"/>
+
+</LinearLayout>

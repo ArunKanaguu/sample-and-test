@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigator"
+    app:startDestination="@id/mainMenuFragment">
+
+    <fragment
+        android:id="@+id/mainMenuFragment"
+        android:name="dev.testing.sampleandtest.ui.MainMenuFragment"
+        android:label="fragment_main_menu"
+        tools:layout="@layout/fragment_main_menu">
+        <action
+            android:id="@+id/action_mainMenuFragment_to_timePickerFragment"
+            app:destination="@id/timePickerFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/timePickerFragment"
+        android:name="dev.testing.sampleandtest.ui.time.TimePickerFragment"
+        android:label="fragment_time_picker"
+        tools:layout="@layout/fragment_time_picker" />
+    <fragment
+        android:id="@+id/ttsToFileFragment"
+        android:name="dev.testing.sampleandtest.ui.tts.TtsToFileFragment"
+        android:label="fragment_tts_to_file"
+        tools:layout="@layout/fragment_tts_to_file" />
+    <fragment
+        android:id="@+id/numberToWordsFragment"
+        android:name="dev.testing.sampleandtest.ui.NumberToWordsFragment"
+        android:label="fragment_number_to_words"
+        tools:layout="@layout/fragment_number_to_words" />
+    <fragment
+        android:id="@+id/imageConverterFragment"
+        android:name="dev.testing.sampleandtest.ui.image.ImageConverterFragment"
+        android:label="fragment_image_convertion"
+        tools:layout="@layout/fragment_image_convertion" />
+    <fragment
+        android:id="@+id/autoTimeSyncFragment"
+        android:name="dev.testing.sampleandtest.ui.time.AutoTimeSyncFragment"
+        android:label="fragment_auto_time_sync"
+        tools:layout="@layout/fragment_auto_time_sync" />
+    <fragment
+        android:id="@+id/cameraFragment"
+        android:name="dev.testing.sampleandtest.ui.camera.CameraFragment"
+        android:label="fragment_camera"
+        tools:layout="@layout/fragment_camera" />
+    <fragment
+        android:id="@+id/camaraXFragment"
+        android:name="dev.testing.sampleandtest.ui.camera.CamaraXFragment"
+        android:label="fragment_camara_x"
+        tools:layout="@layout/fragment_camara_x" />
+    <fragment
+        android:id="@+id/customViewFragment"
+        android:name="dev.testing.sampleandtest.ui.customview.CustomViewFragment"
+        android:label="fragment_custom_view"
+        tools:layout="@layout/fragment_custom_view" />
+    <fragment
+        android:id="@+id/PDFFragment"
+        android:name="dev.testing.sampleandtest.ui.PDFFragment"
+        android:label="fragment_p_d_f"
+        tools:layout="@layout/fragment_p_d_f" />
+    <fragment
+        android:id="@+id/customSplitViewFragment"
+        android:name="dev.testing.sampleandtest.ui.customview.CustomSplitViewFragment"
+        android:label="fragment_custom_split_view"
+        tools:layout="@layout/fragment_custom_split_view" />
+    <fragment
+        android:id="@+id/colorFragment"
+        android:name="dev.testing.sampleandtest.ui.image.ColorFragment"
+        android:label="fragment_color"
+        tools:layout="@layout/fragment_color" />
+    <fragment
+        android:id="@+id/canvaShapeFragment"
+        android:name="dev.testing.sampleandtest.ui.canva.CanvaShapeFragment"
+        android:label="fragment_canva_shape"
+        tools:layout="@layout/fragment_canva_shape" />
+    <fragment
+        android:id="@+id/camara2Fragment"
+        android:name="dev.testing.sampleandtest.ui.camera.Camara2Fragment"
+        android:label="fragment_camara2"
+        tools:layout="@layout/fragment_camara2" />
+    <fragment
+        android:id="@+id/screenSizeFragment"
+        android:name="dev.testing.sampleandtest.ui.customview.ScreenSizeFragment"
+        android:label="fragment_screen_size"
+        tools:layout="@layout/fragment_screen_size" />
+</navigation>
