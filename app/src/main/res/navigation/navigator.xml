@@ -54,11 +54,7 @@
         android:name="dev.testing.sampleandtest.ui.customview.CustomViewFragment"
         android:label="fragment_custom_view"
         tools:layout="@layout/fragment_custom_view" />
-    <fragment
-        android:id="@+id/PDFFragment"
-        android:name="dev.testing.sampleandtest.ui.PDFFragment"
-        android:label="fragment_p_d_f"
-        tools:layout="@layout/fragment_p_d_f" />
+
     <fragment
         android:id="@+id/customSplitViewFragment"
         android:name="dev.testing.sampleandtest.ui.customview.CustomSplitViewFragment"
@@ -84,4 +80,19 @@
         android:name="dev.testing.sampleandtest.ui.customview.ScreenSizeFragment"
         android:label="fragment_screen_size"
         tools:layout="@layout/fragment_screen_size" />
+    <fragment
+        android:id="@+id/usbPrinterFragment"
+        android:name="dev.testing.sampleandtest.ui.print.UsbPrinterFragment"
+        android:label="fragment_usb_printer"
+        tools:layout="@layout/fragment_usb_printer" />
+    <fragment
+        android:id="@+id/pdfFragment"
+        android:name="dev.testing.sampleandtest.ui.pdf.PdfFragment"
+        android:label="fragment_pdf"
+        tools:layout="@layout/fragment_pdf" />
+    <fragment
+        android:id="@+id/webViewFragment"
+        android:name="dev.testing.sampleandtest.ui.web.WebViewFragment"
+        android:label="fragment_web_view"
+        tools:layout="@layout/fragment_web_view" />
 </navigation>

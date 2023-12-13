@@ -11,10 +11,13 @@ import android.media.AudioManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.Environment
 import android.provider.Settings
 import android.speech.tts.TextToSpeech
 import android.speech.tts.UtteranceProgressListener
 import android.util.Log
+import android.view.WindowInsets
+import android.view.WindowManager
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.annotation.Keep
@@ -32,19 +35,21 @@ import dev.testing.sampleandtest.database.Dog
 import dev.testing.sampleandtest.database.Owner
 import dev.testing.sampleandtest.databinding.ActivityMainBinding
 import dev.testing.sampleandtest.services.OverlayService
+import dev.testing.sampleandtest.utils.hideSystemUI
 import dev.testing.sampleandtest.utils.isDeviceRooted
 import dev.testing.sampleandtest.viewmodel.AppViewModel
 import dev.testing.sampleandtest.worker.MyWorker1
 import retrofit2.Call
 import retrofit2.Response
+import java.io.BufferedReader
 import java.io.File
 import java.io.FileInputStream
 import java.io.IOException
+import java.io.InputStreamReader
 import java.util.Locale
 import java.util.UUID
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
-
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -61,6 +66,8 @@ class MainActivity : AppCompatActivity() {
     lateinit var textToSpeech: TextToSpeech
 
     private lateinit var data: Array<String>
+
+    private var folderPath = Environment.getExternalStorageDirectory().absolutePath
 
     private val ACTION_INTERCEPT_ON = "com.android.internal.policy.statusbar.intercept.on"
     private val ACTION_INTERCEPT_OFF = "com.android.internal.policy.statusbar.intercept.off"
@@ -80,7 +87,16 @@ class MainActivity : AppCompatActivity() {
         navController = navHostFragment.navController
         setObserveDBRelation()
         //apiTest()
-        //scheduleWorkers()
+        //scheduleWorkers(
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            window.insetsController?.hide(WindowInsets.Type.statusBars())
+        } else {
+            window.setFlags(
+                WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN
+            )
+        }
 
         // Check storage permission
         PERMISSIONS = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -99,8 +115,27 @@ class MainActivity : AppCompatActivity() {
         }
 
         installedApps()
+        val filePermission = permissionCheck()
+        Log.d(TAG, "onCreate: $filePermission")
+        if (filePermission) {
+            val folderName = "Sample and Test"
+            val folder = File(Environment.getExternalStorageDirectory(), folderName)
 
-        Log.d(TAG, "onCreate: ${permissionCheck()}")
+            if (!folder.exists()) {
+                if (folder.mkdirs()) {
+                    // Folder was created successfully in the root of external storage
+                    Log.d("FolderCreation", "Folder created: ${folder.absolutePath}")
+                    folderPath = folder.absolutePath
+                } else {
+                    // Failed to create the folder
+                    Log.e("FolderCreation", "Failed to create folder: ${folder.absolutePath}")
+                    folderPath = folder.absolutePath
+                }
+            } else {
+                // Folder already exists
+                Log.d("FolderCreation", "Folder already exists: ${folder.absolutePath}")
+            }
+        }
         textToSpeech.language = Locale.forLanguageTag("ar")
         textToSpeech.setSpeechRate(0.8f);
         textToSpeech.setPitch(1.0f)
@@ -125,6 +160,9 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
+        setCallVolume(this, 1.0)
+        increaseAllVolumes(this)
+
         // Call the function to handle recent app click
         //handleRecentAppClick()
 
@@ -133,6 +171,11 @@ class MainActivity : AppCompatActivity() {
 
         getJsonToSplit()
 
+    }
+
+    override fun onWindowFocusChanged(hasFocus: Boolean) {
+        super.onWindowFocusChanged(hasFocus)
+        window?.hideSystemUI()
     }
 
     // MasterData
@@ -416,6 +459,7 @@ class MainActivity : AppCompatActivity() {
                 destFile = File(
                     applicationContext.filesDir, "tts-${System.currentTimeMillis()}.wav"
                 ).absolutePath
+
                 if (File(destFile).exists()) {
                     File(destFile).delete();
                 }
@@ -508,17 +552,133 @@ class MainActivity : AppCompatActivity() {
                     "un-root"
                 }, Toast.LENGTH_SHORT
             ).show()
+
+            if (isDeviceRooted()) {
+                deviceShutdownForRooted1()
+                deviceShutdownForRooted()
+                Log.i(TAG, "findAndroidType: ${runShellCommand("reboot -p")}")
+                //initiateShutdown(this)
+            } else {
+                Log.d(TAG, "findAndroidType: ")
+
+                deviceShutdownForRooted1()
+            }
         } catch (e: java.lang.Exception) {
             e.printStackTrace()
         }
     }
 
+    private fun initiateShutdown(context: Context) {
+        val intent = Intent(Intent.ACTION_SHUTDOWN)
+        context.sendBroadcast(intent)
+    }
+
     private fun deviceShutdownForRooted() {
         try {
-            Runtime.getRuntime().exec(arrayOf("/system/xbin/su", "-c", "reboot -p"))
+            Runtime.getRuntime().exec(arrayOf("/system/bin/su", "-c", "reboot -p"))
         } catch (e: java.lang.Exception) {
             e.printStackTrace()
         }
+    }
+
+    private fun deviceShutdownForRooted1() {
+        try {
+            val process = Runtime.getRuntime().exec(arrayOf("which", "su"))
+            val bufferedReader = BufferedReader(InputStreamReader(process.inputStream))
+            val suPath = bufferedReader.readLine()
+            Log.i(TAG, "deviceShutdownForRooted1: $suPath")
+            if (suPath != null) {
+                Runtime.getRuntime().exec(arrayOf(suPath, "-c", "reboot -p"))
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+    private fun runShellCommand(command: String): String {
+        try {
+            val process = ProcessBuilder()
+                .command("sh", "-c", command)
+                .redirectErrorStream(true)
+                .start()
+
+            val reader = BufferedReader(InputStreamReader(process.inputStream))
+            val output = StringBuilder()
+            var line: String?
+
+            while (reader.readLine().also { line = it } != null) {
+                output.append(line).append("\n")
+            }
+
+            process.waitFor()
+
+            return output.toString()
+        } catch (e: Exception) {
+            e.printStackTrace()
+            return "Error: ${e.message}"
+        }
+    }
+
+    /*fun promptShutdown(context: Context) {
+        val powerManager = context.getSystemService(Context.POWER_SERVICE) as PowerManager
+        if (powerManager.isPowerSaveMode) {
+            // Prompt the user to exit power save mode
+        } else {
+            val shutdownIntent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                Intent(Intent.ACTION_SHUTDOWN)
+            } else {
+                Intent("com.android.internal.intent.action.REQUEST_SHUTDOWN")
+            }
+            val pendingIntent = PendingIntent.getBroadcast(context, 0, shutdownIntent, PendingIntent.FLAG_CANCEL_CURRENT)
+
+            try {
+                //powerManager.shutdown(pendingIntent)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }*/
+
+    private fun setCallVolume(context: Context, percentage: Double) {
+        try {
+            val audioManager = context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
+            // Get the maximum call volume level
+            val maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_VOICE_CALL)
+            // Calculate the target volume based on the specified percentage
+            val targetVolume = (percentage * maxVolume).toInt()
+            // Set the call volume to the calculated target volume
+            audioManager.setStreamVolume(AudioManager.STREAM_VOICE_CALL, targetVolume, 0)
+        } catch (e: Exception) {
+            Log.e("Utils", "setCallVolume: ${e.message}")
+        }
+    }
+
+    private fun increaseAllVolumes(context: Context) {
+        val audioManager = context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
+
+        // Get the maximum volume level for each stream
+        val maxAlarmVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_ALARM)
+        val maxMusicVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)
+        val maxRingVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_RING)
+        val maxNotificationVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_NOTIFICATION)
+        val maxCallVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_VOICE_CALL)
+        val maxSystemVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_SYSTEM)
+
+        // Increase the volume for each stream (adjust the multiplier as needed)
+        audioManager.setStreamVolume(AudioManager.STREAM_ALARM, (maxAlarmVolume * 0.9).toInt(), 0)
+        audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, (maxMusicVolume * 0.9).toInt(), 0)
+        audioManager.setStreamVolume(AudioManager.STREAM_RING, (maxRingVolume * 0.9).toInt(), 0)
+        audioManager.setStreamVolume(
+            AudioManager.STREAM_NOTIFICATION,
+            (maxNotificationVolume * 0.9).toInt(),
+            0
+        )
+        audioManager.setStreamVolume(
+            AudioManager.STREAM_VOICE_CALL,
+            (maxCallVolume * 0.9).toInt(),
+            0
+        )
+        audioManager.setStreamVolume(AudioManager.STREAM_SYSTEM, (maxSystemVolume * 0.9).toInt(), 0)
     }
 
     companion object {
@@ -527,7 +687,6 @@ class MainActivity : AppCompatActivity() {
         private const val PERMISSION_REQUEST_REBOOT = 123
         private const val id: String = "TextToSheechAudio"
     }
-
 
 
 }

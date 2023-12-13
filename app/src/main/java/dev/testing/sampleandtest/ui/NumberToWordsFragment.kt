@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import dev.testing.sampleandtest.common.Currency
+import dev.testing.sampleandtest.commons.Currency
 import dev.testing.sampleandtest.databinding.FragmentNumberToWordsBinding
 
 class NumberToWordsFragment : Fragment() {
@@ -24,7 +24,8 @@ class NumberToWordsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         with(binding){
             currency.setOnClickListener {
-             val d = Currency().currency(numbers.text.toString(),false)
+                val d = Currency()
+                    .currency(numbers.text.toString(), false)
                 words.text = d.toString()
             }
         }

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.web.WebViewFragment">
+
+    <dev.testing.sampleandtest.cursorlayout.CursorLayout
+        android:id="@+id/cursorLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <WebView
+            android:id="@+id/web_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+
+            />
+    </dev.testing.sampleandtest.cursorlayout.CursorLayout>
+
+</FrameLayout>

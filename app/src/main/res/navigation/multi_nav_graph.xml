@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/multi_nav_graph"
+    app:startDestination="@id/defaultFragment">
+
+    <fragment
+        android:id="@+id/defaultFragment"
+        android:name="dev.testing.sampleandtest.ui.multiscreen.DefaultFragment"
+        android:label="fragment_default"
+        tools:layout="@layout/fragment_default">
+
+        <action
+            android:id="@+id/action_defaultFragment_to_imageFragment"
+            app:destination="@id/imageFragment"
+            app:popUpTo="@id/defaultFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_defaultFragment_to_webPageFragment"
+            app:destination="@id/webPageFragment"
+            app:popUpTo="@id/defaultFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_defaultFragment_to_videoFragment"
+            app:destination="@id/videoFragment"
+            app:popUpTo="@id/defaultFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/imageFragment"
+        android:name="dev.testing.sampleandtest.ui.multiscreen.ImageFragment"
+        android:label="fragment_image"
+        tools:layout="@layout/fragment_image">
+        <action
+            android:id="@+id/action_imageFragment_to_defaultFragment"
+            app:destination="@id/defaultFragment"
+            app:popUpTo="@id/imageFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_imageFragment_to_webPageFragment"
+            app:destination="@id/webPageFragment"
+            app:popUpTo="@id/imageFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_imageFragment_to_videoFragment"
+            app:destination="@id/videoFragment"
+            app:popUpTo="@id/imageFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/videoFragment"
+        android:name="dev.testing.sampleandtest.ui.multiscreen.VideoFragment"
+        android:label="fragment_video"
+        tools:layout="@layout/fragment_video">
+        <action
+            android:id="@+id/action_videoFragment_to_defaultFragment"
+            app:destination="@id/defaultFragment"
+            app:popUpTo="@id/videoFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_videoFragment_to_webPageFragment"
+            app:destination="@id/webPageFragment"
+            app:popUpTo="@id/videoFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_videoFragment_to_imageFragment"
+            app:destination="@id/imageFragment"
+            app:popUpTo="@id/videoFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/webPageFragment"
+        android:name="dev.testing.sampleandtest.ui.multiscreen.WebPageFragment"
+        android:label="fragment_web_page"
+        tools:layout="@layout/fragment_web_page">
+        <action
+            android:id="@+id/action_webPageFragment_to_imageFragment"
+            app:destination="@id/imageFragment"
+            app:popUpTo="@id/webPageFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_webPageFragment_to_videoFragment"
+            app:destination="@id/videoFragment"
+            app:popUpTo="@id/webPageFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_webPageFragment_to_defaultFragment"
+            app:destination="@id/defaultFragment"
+            app:popUpTo="@id/webPageFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+</navigation>

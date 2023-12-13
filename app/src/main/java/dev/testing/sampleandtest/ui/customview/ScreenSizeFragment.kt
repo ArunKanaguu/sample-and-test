@@ -32,6 +32,8 @@ class ScreenSizeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         getFullWindowSize()
+
+
     }
 
     private fun getFullWindowSize() {

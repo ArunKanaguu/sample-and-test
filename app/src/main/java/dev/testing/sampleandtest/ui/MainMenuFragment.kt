@@ -15,11 +15,13 @@ import dev.testing.sampleandtest.R
 import dev.testing.sampleandtest.SampleAndTestApp
 import dev.testing.sampleandtest.adapter.MainMenuAdapter
 import dev.testing.sampleandtest.databinding.FragmentMainMenuBinding
+import dev.testing.sampleandtest.utils.getEthMac
 
 
 class MainMenuFragment : Fragment() {
     private var _binding: FragmentMainMenuBinding? = null
     private val binding get() = _binding!!
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
@@ -29,6 +31,8 @@ class MainMenuFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+
         val menuList = arrayListOf<String>()
         menuList.add("TimePicker")
         menuList.add("Text to Speech (Audio File)")
@@ -38,19 +42,27 @@ class MainMenuFragment : Fragment() {
         menuList.add("CameraX UAB Cam")
         menuList.add("usb cam")
         menuList.add("CustomView")
+        menuList.add("videoplayer")
         menuList.add("CustomSplitView")
         menuList.add("JsonCustomSplitView")
         menuList.add("canvas")
         menuList.add("shutdown")
         menuList.add("camera2")
         menuList.add("screen size")
+        menuList.add("Print")
         menuList.add("pdf")
+        menuList.add("web view")
+        menuList.add("mac id")
         binding.menuRecyclerView?.adapter =
             MainMenuAdapter(menuList, object : MainMenuAdapter.OnClickListener {
                 override fun onClick(menuStr: String) {
                     when (menuStr) {
                         "TimePicker" -> {
                             findNavController().navigate(R.id.timePickerFragment)
+                        }
+
+                        "Print" -> {
+                            findNavController().navigate(R.id.usbPrinterFragment)
                         }
 
                         "camera2" -> {
@@ -106,9 +118,17 @@ class MainMenuFragment : Fragment() {
                         }
 
                         "pdf" -> {
-                            findNavController().navigate(R.id.PDFFragment)
+                            findNavController().navigate(R.id.pdfFragment)
                         }
 
+                        "web view" -> {
+                            findNavController().navigate(R.id.webViewFragment)
+                        }
+
+                        "mac id" -> {
+                            val macId = getEthMac()
+                            Toast.makeText(requireContext(), "mac id = $macId", Toast.LENGTH_SHORT).show()
+                        }
                         "recent app" -> {
                             val activityManager: ActivityManager =
                                 requireContext().getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager

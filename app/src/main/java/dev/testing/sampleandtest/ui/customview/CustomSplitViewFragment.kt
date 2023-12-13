@@ -134,7 +134,6 @@ class CustomSplitViewFragment : Fragment() {
             heightSplit = splitCount
         } else if (e){
             val orientation = this.resources.configuration.orientation
-
             if (orientation == Configuration.ORIENTATION_PORTRAIT) {
                 Log.d(TAG, "createSplitScreen: PORTRAIT")
                 widthSplit = 2
@@ -144,9 +143,7 @@ class CustomSplitViewFragment : Fragment() {
                 widthSplit = splitCount/2
                 heightSplit = 2
             }
-
         }
-
         Log.d(TAG, "createSplitScreen: width = $width / height = $height / widthSplit = $widthSplit / heightSplit = $heightSplit")
         width = sysWidth / widthSplit
         height = sysHeight / heightSplit

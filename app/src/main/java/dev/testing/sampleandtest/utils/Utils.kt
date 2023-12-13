@@ -14,7 +14,10 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import dev.testing.sampleandtest.MainActivity
 import dev.testing.sampleandtest.ui.time.TimePickerFragment
+import java.io.BufferedReader
 import java.io.File
+import java.io.FileReader
+import java.io.IOException
 import java.util.Date
 import java.util.Locale
 import java.util.TimeZone
@@ -91,4 +94,25 @@ fun MainActivity.checkPermission(permission: String): Boolean {
         permission,
         packageName
     ) == PackageManager.PERMISSION_GRANTED
+}
+
+
+fun getEthMac(): String? {
+    var macAddress: String? = null
+    var br: BufferedReader? = null
+    try {
+        br = BufferedReader(FileReader("/sys/class/net/eth0/address"))
+        macAddress = br.readLine().uppercase()
+    } catch (e: IOException) {
+        e.printStackTrace()
+    } finally {
+        if (br != null) {
+            try {
+                br.close()
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+        }
+    }
+    return macAddress
 }

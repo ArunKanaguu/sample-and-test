@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.testing.sampleandtest.api.ApiRepository
+import dev.testing.sampleandtest.commons.PlayList
 import dev.testing.sampleandtest.database.DatabaseRepository
 import dev.testing.sampleandtest.database.Dog
 import dev.testing.sampleandtest.database.Owner
@@ -18,17 +19,22 @@ class AppViewModel @Inject constructor(
 ) : ViewModel() {
 
 
+    val delay: Long = 10000
     val ttsState = MutableLiveData<String>()
 
     //api
 
-    fun getCoinsDetails() =apiRepository.gatCoinDetails()
+    fun getCoinsDetails() = apiRepository.gatCoinDetails()
 
     //database
 
     val dogDetails = databaseRepository.dogDetails
     val ownerDetails = databaseRepository.ownerDetails
     val dogsAndOwnerList = databaseRepository.dogsAndOwnerList
+
+    val currentPlayerList = mutableListOf<PlayList>()
+    val playerList = ArrayList<PlayList>()
+
 
     fun insertDog(dog: Dog) {
         viewModelScope.launch {
